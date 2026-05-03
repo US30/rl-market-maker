@@ -36,7 +36,7 @@ A **market maker** continuously posts a bid price $b_t$ and an ask price $a_t$ o
 
 The objective is to maximise **risk-adjusted** PnL over an episode:
 
-$$\text{maximise} \quad \mathbb{E}[\text{PnL}] - \text{CVaR}_{5\%}(-\text{PnL}) - \gamma \cdot \int q_t^2 \, dt$$
+$$\text{maximise} \quad \mathbb{E}[\text{PnL}] - \text{CVaR}_{5\%}(-\text{PnL}) - \gamma \cdot \int q_{t}^{2} \, dt$$
 
 where $q_t$ is inventory, $\gamma$ is an inventory penalty coefficient, and CVaR-5% captures tail loss.
 
@@ -71,7 +71,7 @@ Self-excitation captures order clustering (a large MO triggers more MOs). Cross-
 
 **3. CVaR-5% policy objective** (Rockafellar-Uryasev dual form) instead of mean return. Market makers care about **tail loss**, not average PnL. The CVaR term penalises policies that occasionally blow up on inventory drawdowns even when their mean is acceptable. The dual form is:
 
-$$\text{CVaR}_\alpha(-r) = \min_z \left\{ z + \frac{1}{\alpha} \mathbb{E}[\max(-r - z, 0)] \right\}$$
+$$\text{CVaR}_\alpha(-r) = \min_z \left\lbrace z + \frac{1}{\alpha} \mathbb{E}[\max(-r - z, 0)] \right\rbrace$$
 
 This is differentiable and plugs directly into the PPO update as a regulariser on episode returns.
 
@@ -164,7 +164,7 @@ Standard PPO with GAE(λ) advantage estimation. The critic is replaced with an I
 
 The PPO policy gradient loss is augmented with a CVaR regulariser:
 
-$$\mathcal{L} = \mathcal{L}_\text{PPO-clip}(\theta) + \beta \cdot \text{CVaR}_{5\%}(-G_\text{episode})$$
+$$\mathcal{L} = \mathcal{L}_{\text{PPO-clip}}(\theta) + \beta \cdot \text{CVaR}_{5\%}(-G_{\text{episode}})$$
 
 where $G_\text{episode}$ are per-episode returns in the rollout batch. This pushes the policy away from tail disasters even when the mean is good.
 
@@ -191,7 +191,7 @@ All three baselines implement the same `action(mid, inventory, tau, sigma, tick_
 ### Avellaneda-Stoikov (2008)
 Optimal quotes under BM mid-price + Poisson arrivals + exponential utility. Closed-form solution:
 
-$$r^* = S - q \gamma \sigma^2 (T-t), \qquad s^* = \gamma \sigma^2 (T-t) + \frac{2}{\gamma} \ln\!\left(1 + \frac{\gamma}{k}\right)$$
+$$r^* = S - q \gamma \sigma^2 (T-t), \qquad s^* = \gamma \sigma^2 (T-t) + \frac{2}{\gamma} \ln\left(1 + \frac{\gamma}{k}\right)$$
 
 Bid = $r^* - s^*/2$, Ask = $r^* + s^*/2$.
 
