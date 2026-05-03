@@ -36,7 +36,7 @@ A **market maker** continuously posts a bid price $b_t$ and an ask price $a_t$ o
 
 The objective is to maximise **risk-adjusted** PnL over an episode:
 
-$$\text{maximise} \quad \mathbb{E}[\text{PnL}] - \text{CVaR}_{5\%}(-\text{PnL}) - \gamma \cdot \int q_{t}^{2} \, dt$$
+$$\text{maximise} \quad \mathbb{E}\left[\mathrm{PnL}\right] - \operatorname{CVaR}_{5\%}\left(-\mathrm{PnL}\right) - \gamma \cdot \int q_{t}^{2} \, dt$$
 
 where $q_t$ is inventory, $\gamma$ is an inventory penalty coefficient, and CVaR-5% captures tail loss.
 
@@ -164,9 +164,9 @@ Standard PPO with GAE(λ) advantage estimation. The critic is replaced with an I
 
 The PPO policy gradient loss is augmented with a CVaR regulariser:
 
-$$\mathcal{L} = \mathcal{L}_{\text{PPO-clip}}(\theta) + \beta \cdot \text{CVaR}_{5\%}(-G_{\text{episode}})$$
+$$\mathcal{L} = \mathcal{L}_{\text{PPO-clip}}(\theta) + \beta \cdot \operatorname{CVaR}_{5\%}\left(-G_{\text{episode}}\right)$$
 
-where $G_\text{episode}$ are per-episode returns in the rollout batch. This pushes the policy away from tail disasters even when the mean is good.
+where $G_{\text{episode}}$ are per-episode returns in the rollout batch. This pushes the policy away from tail disasters even when the mean is good.
 
 ### Imitation Warm-Start
 
