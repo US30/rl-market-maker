@@ -1,0 +1,35 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+
+# checkpoints and results (large files)
+checkpoints/*.pt
+results/figs/*.png
+results/figs/*.pdf
+
+# data
+data/
+
+# calibration output (regenerate via scripts/calibrate.py)
+rlmm/calibration/params.json
+
+# jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# env
+.env
+.venv/
+venv/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/

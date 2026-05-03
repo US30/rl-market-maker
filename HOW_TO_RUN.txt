@@ -1,0 +1,60 @@
+============================
+RL MARKET MAKER — HOW TO RUN
+============================
+
+1. INSTALL
+----------
+cd rl_market_maker
+pip install -e .
+
+2. SANITY CHECK (LOB simulator + stylized facts)
+-------------------------------------------------
+python -m rlmm.notebooks.01_lob_sim_sanity
+# Saves figures to results/figs/
+
+3. BASELINES (A-S, GLT, CJ on simulated paths)
+------------------------------------------------
+python -m rlmm.notebooks.02_baselines
+# Prints Sharpe / CVaR-5% / fill-rate table
+
+4. CALIBRATE SIM TO LOBSTER DATA (optional)
+--------------------------------------------
+# Download LOBSTER sample data from lobsterdata.com, place in data/lobster/
+python scripts/calibrate.py --data data/lobster/ --out rlmm/calibration/params.json
+
+5. TRAIN MAIN AGENT (Transformer + IQN + CVaR + warm-start + curriculum)
+--------------------------------------------------------------------------
+python -m rlmm.train.train \
+  --policy transformer \
+  --critic iqn \
+  --objective cvar \
+  --warm-start as \
+  --curriculum on \
+  --n-envs 16 \
+  --total-steps 2000000 \
+  --save-dir checkpoints/
+
+# Typical H100 runtime: ~2-3 hours for 2M steps with 16 envs
+
+6. ABLATIONS
+------------
+# Scalar critic + mean objective (baseline PPO)
+python -m rlmm.train.train --policy mlp --critic scalar --objective mean --save-dir checkpoints/
+
+# IQN + CVaR without warm-start
+python -m rlmm.train.train --policy transformer --critic iqn --objective cvar --save-dir checkpoints/
+
+7. COMPARE AGAINST ANALYTIC BASELINES
+--------------------------------------
+python scripts/compare.py --ckpt checkpoints/transformer_cvar_best.pt
+# Prints head-to-head: agent vs A-S / GLT / CJ
+# Metrics: mean_pnl, sharpe, cvar_5, inventory_l2, fill_rate, realized_spread_captured
+
+8. MAIN EXPERIMENT NOTEBOOK
+----------------------------
+python -m rlmm.notebooks.03_ppo_iqn_cvar
+# Full ablation figures for report/thesis
+
+9. LOBSTER CALIBRATION NOTEBOOK
+---------------------------------
+python -m rlmm.notebooks.04_lobster_calib
