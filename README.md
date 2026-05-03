@@ -164,7 +164,7 @@ Standard PPO with GAE(λ) advantage estimation. The critic is replaced with an I
 
 The PPO policy gradient loss is augmented with a CVaR regulariser:
 
-$$\mathcal{L} = \mathcal{L}_{\text{PPO-clip}}(\theta) + \beta \cdot \operatorname{CVaR}_{5\%}\left(-G_{\text{episode}}\right)$$
+$$\mathcal{L} = \mathcal{L}_{\text{PPO-clip}}(\theta) + \beta \cdot \mathrm{CVaR}_{5\\%}\left(-G_{\text{episode}}\right)$$
 
 where $G_{\text{episode}}$ are per-episode returns in the rollout batch. This pushes the policy away from tail disasters even when the mean is good.
 
