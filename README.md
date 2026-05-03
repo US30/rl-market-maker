@@ -36,7 +36,7 @@ A **market maker** continuously posts a bid price $b_t$ and an ask price $a_t$ o
 
 The objective is to maximise **risk-adjusted** PnL over an episode:
 
-$$\text{maximise} \quad \mathbb{E}\left[\mathrm{PnL}\right] - \mathrm{CVaR}_{5\%}\left(-\mathrm{PnL}\right) - \gamma \cdot \int q_{t}^{2} \, dt$$
+$$\text{maximise} \quad \mathbb{E}\left[\mathrm{PnL}\right] - \mathrm{CVaR}_{5\\%}\left(-\mathrm{PnL}\right) - \gamma \cdot \int q_{t}^{2} \, dt$$
 
 where $q_t$ is inventory, $\gamma$ is an inventory penalty coefficient, and CVaR-5% captures tail loss.
 
